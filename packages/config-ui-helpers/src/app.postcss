@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+@font-face {
+  /* Reference name */
+  font-family: 'Montserrat';
+  /* For multiple files use commas, ex: url(), url(), ... */
+  src: url('/fonts/Montserrat-VariableFont_wght.ttf'),
+    url('/fonts/Montserrat-Italic-VariableFont_wght.ttf');
+}
+
+html,
+body {
+  @apply h-full overflow-hidden;
+  letter-spacing: -0.005em;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.section-header {
+  @apply mb-4;
+}
+.debris {
+  width: 100%;
+}
+
+h1 {
+  @apply text-4xl font-bold;
+}
+
+h2 {
+  @apply text-3xl font-semibold;
+}
+
+h3 {
+  @apply text-2xl font-semibold;
+}
+
+h4 {
+  @apply text-xl font-semibold;
+}
+
+.link {
+  @apply text-primary-500 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-200;
+}
+
+.input,
+.textarea,
+.select,
+.input-group {
+  @apply bg-white dark:bg-black;
+}
+
+.card {
+  @apply bg-white bg-opacity-75 dark:bg-surface-600 dark:bg-opacity-75;
+}
+
+.input[readonly] {
+  @apply !border-surface-400-500-token;
+}
+
+.btn-primary {
+  @apply btn bg-gradient-to-br variant-gradient-primary-secondary;
+}
+
+.btn-secondary {
+  @apply btn bg-gradient-to-br from-[#728996] to-[#355669] text-white;
+}
+.btn-success {
+  @apply btn bg-gradient-to-br from-success-700 to-success-800 text-white;
+}
+.btn-error {
+  @apply btn bg-gradient-to-br from-error-500 to-error-700 text-white;
+}

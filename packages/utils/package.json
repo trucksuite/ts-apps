@@ -1,0 +1,10 @@
+{
+  "name": "@repo/utils",
+  "type": "module",
+  "exports": {
+    "./public-id": "./public-id.ts"
+  },
+  "devDependencies": {
+    "nanoid": "^5.0.7"
+  }
+}
