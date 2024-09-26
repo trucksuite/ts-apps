@@ -9,7 +9,7 @@
 
 	function getPath(currentPath: string) {
 		path = currentPath;
-		console.log(path);
+		// console.log(path);
 	}
 
 	$: getPath($page.url.pathname);

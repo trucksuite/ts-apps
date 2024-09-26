@@ -873,7 +873,7 @@ async function main() {
 
   console.log('Created warranty ratesheet with public id: ', fakeWarrantyRatesheetVoc.publicId);
 
-  const fakeCustomer = await prisma.customer.create({
+  const fakeCustomer1 = await prisma.customer.create({
     data: {
       id: 1,
       publicId: generatePublicId(),
@@ -891,19 +891,39 @@ async function main() {
     }
   });
 
-  console.log('Created customer with public id: ', fakeCustomer.publicId);
+  console.log('Created customer with public id: ', fakeCustomer1.publicId);
 
-  const fakeTruck = await prisma.truck.create({
+  const fakeCustomer2 = await prisma.customer.create({
+    data: {
+      id: 2,
+      publicId: generatePublicId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      firstName: 'Danny',
+      lastName: 'Trejo',
+      email: 'bigD@hotmail.com',
+      phone: '9876543210',
+      address: '4389 Second St',
+      city: 'Tucson',
+      state: 'AZ',
+      zip: '85088',
+      country: 'USA'
+    }
+  });
+
+  console.log('Created customer with public id: ', fakeCustomer2.publicId);
+
+  const fakeTruck1 = await prisma.truck.create({
     data: {
       id: 1,
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      vin: '1234567890',
+      vin: '1FUJHTFW9RLVD9985',
       odometer: 100000,
       odometerUnit: 'MILES',
       ecm: 123456,
-      ecmUnits: 'MILES',
+      ecmUnit: 'MILES',
       year: 2020,
       make: 'Volvo',
       model: 'VNL',
@@ -915,12 +935,40 @@ async function main() {
       apuMake: 'Thermo King',
       apuSerialNum: '123456',
       apuHours: 5000,
-      customerId: fakeCustomer.id,
+      customerId: fakeCustomer1.id,
       truckLienholderId: 1
     }
   });
 
-  console.log('Created truck with public id: ', fakeTruck.publicId);
+  console.log('Created truck with public id: ', fakeTruck1.publicId);
+  const fakeTruck2 = await prisma.truck.create({
+    data: {
+      id: 2,
+      publicId: generatePublicId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      vin: '1FVACXFE0RHVA8913',
+      odometer: 100000,
+      odometerUnit: 'MILES',
+      ecm: 123456,
+      ecmUnit: 'MILES',
+      year: 2020,
+      make: 'Volvo',
+      model: 'VNL',
+      engineMakeModel: 'Volvo',
+      engineSerialNum: 'D13',
+      gvwr: 'Class 8',
+      vehicleType: 'Truck',
+      fuelType: 'DIESEL',
+      apuMake: 'Thermo King',
+      apuSerialNum: '123456',
+      apuHours: 5000,
+      customerId: fakeCustomer2.id,
+      truckLienholderId: 1
+    }
+  });
+
+  console.log('Created truck with public id: ', fakeTruck2.publicId);
 
   const fakeTruckLienholder = await prisma.truckLienholder.create({
     data: {
@@ -936,7 +984,7 @@ async function main() {
       country: 'USA',
       phone: '1234567890',
       email: 'boa@mail.com',
-      truckId: fakeTruck.id
+      truckId: fakeTruck1.id
     }
   });
 
@@ -975,7 +1023,20 @@ async function main() {
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      warrantyProductSelectedId: 1
+      warrantyProductSelectedId: 1,
+      warrantyOptions: {
+        connect: [
+          {
+            id: 1
+          },
+          {
+            id: 2
+          },
+          {
+            id: 3
+          }
+        ]
+      }
     }
   });
 
@@ -990,7 +1051,17 @@ async function main() {
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      locationWarrantyProductAssignedId: 1
+      locationWarrantyProductAssignedId: 1,
+      termSelected: {
+        connect: {
+          id: 1
+        }
+      },
+      optionsSelected: {
+        connect: {
+          id: 1
+        }
+      }
     }
   });
 
@@ -1006,6 +1077,7 @@ async function main() {
       createdAt: new Date(),
       updatedAt: new Date(),
       customerSaleId: 1,
+      invoiceAmount: 9500,
       invoiceStatus: 'DUE_SOON',
       producerLocationId: fakeProducerLocation1.id,
       producerAdminId: fakeProducerAdmin.id,
@@ -1024,8 +1096,8 @@ async function main() {
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      customerId: fakeCustomer.id,
-      truckId: fakeTruck.id,
+      customerId: fakeCustomer1.id,
+      truckId: fakeTruck1.id,
       lienholderId: fakeTruckLienholder.id,
       warrantyProductSelectedId: fakeWarrantyProductSelected.id,
       saleDate: new Date(),
@@ -1034,12 +1106,35 @@ async function main() {
       quotedSalePrice: 10000,
       finalRetailWarrantyPurchasePrice: 9500,
       saleCurrency: 'USD',
-      savedAsQuote: false,
-      customerHasDeclined: false,
+      // 🔥🔥🔥🔥🔥🔥🔥 Change: These are status so not sure if we need them
+      // savedAsQuote: false,
+      // customerHasDeclined: false,
       customerSaleInvoiceId: fakeCustomerSaleInvoice1.id,
-      customerSaleStatus: 'COMPLETED',
+      customerSaleStatus: 'IN_PROGRESS',
+      producerId: fakeProducer.id,
       producerLocationId: 1,
-      producerAdminId: 1
+      producerAdminId: 1,
+      expirationDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+      notes: {
+        create: [
+          {
+            id: 1,
+            publicId: generatePublicId(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            note: 'User created on 2021-01-01',
+            type: 'CREATED'
+          },
+          {
+            id: 2,
+            publicId: generatePublicId(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            note: 'This is a note',
+            type: 'MANUAL'
+          }
+        ]
+      }
     }
   });
 
@@ -1051,6 +1146,7 @@ async function main() {
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      paymentAmount: 2000,
       paymentAuthorized: true,
       paymentMethod: 'CREDIT_CARD',
       paymentDate: new Date(),
@@ -1072,6 +1168,7 @@ async function main() {
       createdAt: new Date(),
       updatedAt: new Date(),
       customerSaleId: 2,
+      invoiceAmount: 9500,
       invoiceStatus: 'DUE_SOON',
       producerLocationId: fakeProducerLocation1.id,
       producerAdminId: fakeProducerAdmin.id,
@@ -1090,25 +1187,24 @@ async function main() {
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      customerId: fakeCustomer.id,
-      truckId: fakeTruck.id,
+      customerId: fakeCustomer2.id,
+      truckId: fakeTruck2.id,
       lienholderId: fakeTruckLienholder.id,
       warrantyProductSelectedId: fakeWarrantyProductSelected.id,
-      saleDate: new Date(),
+      saleDate: new Date(new Date().setFullYear(new Date().getFullYear() - 2)),
       includedInRetailPrice: false,
-      financedDeal: true,
+      financedDeal: false,
       quotedSalePrice: 10000,
       finalRetailWarrantyPurchasePrice: 9500,
       saleCurrency: 'USD',
-      savedAsQuote: false,
-      customerHasDeclined: false,
-      downPaymentAmount: 2000,
       customerSaleDownPaymentId: fakeCustomerSaleDownPayment.id,
       customerSummaryOrDeclinationUrl: 'https://www.example.com',
       customerSaleInvoiceId: fakeCustomerSaleInvoice2.id,
-      customerSaleStatus: 'COMPLETED',
+      customerSaleStatus: 'QUOTE',
+      producerId: fakeProducer.id,
       producerLocationId: 1,
-      producerAdminId: 1
+      producerAdminId: 1,
+      expirationDate: new Date()
     }
   });
 

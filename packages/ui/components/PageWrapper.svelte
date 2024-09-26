@@ -13,8 +13,8 @@
 <div class="flex flex-col w-full h-full bg-cover" style={`background-image: url('${bg}')`}>
   <AppShell
     regionPage="p-12 flex items-center justify-center relative"
-    slotPageContent="p-4 bg-surface-100 rounded-lg border border-surface-500 flex flex-col w-full h-full shadow-lg overflow-y-scroll"
-    slotSidebarLeft="overflow-y-hidden border-r border-surface-500 bg-surface-100"
+    slotPageContent="p-8 bg-surface-100/95 rounded-lg border border-surface-500 flex flex-col w-full h-full shadow-lg overflow-y-scroll"
+    slotSidebarLeft="overflow-y-hidden border-r border-surface-500 bg-surface-100/95"
   >
     <svelte:fragment slot="header"><Header type="system" /></svelte:fragment>
     <svelte:fragment slot="sidebarLeft"><Sidebar activePath={path} /></svelte:fragment>

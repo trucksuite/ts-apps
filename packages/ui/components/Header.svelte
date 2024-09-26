@@ -5,7 +5,7 @@
   export let type = 'system';
 </script>
 
-<div class="relative z-10 flex items-center justify-between bg-surface-100 shadow-md p-4">
+<div class="relative z-10 flex items-center justify-between bg-surface-100/95 shadow-md p-4">
   <div class="flex items-center">
     <a href="/" class="w-full">
       {#if type === 'system'}

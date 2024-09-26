@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Dashboard from '../assets/icons/dashboard.svelte';
-  import Flag from '../assets/icons/flag.svelte';
-  import Gear from '../assets/icons/gear.svelte';
-  import Person from '../assets/icons/person.svelte';
-  import Piechart from '../assets/icons/piechart.svelte';
-  import Web from '../assets/icons/web.svelte';
+  import Dashboard from './icons/Dashboard.svelte';
+  import Flag from './icons/Flag.svelte';
+  import Gear from './icons/Gear.svelte';
+  import Person from './icons/Person.svelte';
+  import Piechart from './icons/Piechart.svelte';
+  import Web from './icons/Web.svelte';
 
   export let activePath = '';
 

@@ -54,6 +54,7 @@ model Producer {
   producerAgreementId             String?
   truckSuiteSalesRepresentative   TruckSuiteSalesRepresentative? @relation(fields: [truckSuiteSalesRepresentativeId], references: [id])
   truckSuiteSalesRepresentativeId Int?
+  customerSale                    CustomerSale[]
 
   @@index([publicId])
   @@index([name])
@@ -151,6 +152,19 @@ model LocationNote {
   location   ProducerLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
 
   @@index([locationId])
+}
+
+model CustomerSaleNote {
+  id             Int                  @id @default(autoincrement())
+  publicId       String               @unique @map("public_id") @db.VarChar(12)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  note           String               @db.LongText
+  type           CustomerSaleNoteType
+  customerSaleId Int
+  customerSale   CustomerSale         @relation(fields: [customerSaleId], references: [id], onDelete: Cascade)
+
+  @@index([customerSaleId])
 }
 
 model LocationContact {
@@ -397,7 +411,7 @@ model Truck {
   odometer          Int
   odometerUnit      MileageUnits
   ecm               Int
-  ecmUnits          MileageUnits
+  ecmUnit           MileageUnits
   year              Int
   make              String
   model             String
@@ -452,15 +466,12 @@ model CustomerSale {
   lienholder                       TruckLienholder?         @relation(fields: [lienholderId], references: [id])
   warrantyProductSelectedId        Int
   warrantyProductSelected          WarrantyProductSelected  @relation(fields: [warrantyProductSelectedId], references: [id])
-  saleDate                         DateTime
+  saleDate                         DateTime?
   includedInRetailPrice            Boolean                  @default(false)
   financedDeal                     Boolean                  @default(false)
   quotedSalePrice                  Int
   finalRetailWarrantyPurchasePrice Int
   saleCurrency                     String
-  savedAsQuote                     Boolean                  @default(false)
-  customerHasDeclined              Boolean                  @default(false)
-  downPaymentAmount                Int?
   customerSaleDownPaymentId        Int?                     @unique
   customerSaleDownPayment          CustomerSaleDownPayment?
   customerSummaryOrDeclinationUrl  String?
@@ -469,10 +480,14 @@ model CustomerSale {
   customerSaleStatus               CustomerSaleStatus
   signedAgreementId                Int?
   signedAgreement                  WarrantySignedAgreement? @relation(fields: [signedAgreementId], references: [id])
+  producerId                       Int
+  producer                         Producer                 @relation(fields: [producerId], references: [id])
   producerLocation                 ProducerLocation         @relation(fields: [producerLocationId], references: [id])
   producerLocationId               Int
   producerAdmin                    ProducerAdmin            @relation(fields: [producerAdminId], references: [id])
   producerAdminId                  Int
+  expirationDate                   DateTime?
+  notes                            CustomerSaleNote[]
 
   @@index([producerLocationId])
   @@index([producerAdminId])
@@ -481,6 +496,7 @@ model CustomerSale {
   @@index([truckId])
   @@index([lienholderId])
   @@index([warrantyProductSelectedId])
+  @@index([producerId])
 }
 
 model WarrantyProductSelected {
@@ -542,6 +558,7 @@ model CustomerSaleDownPayment {
   paymentAuthorized              Boolean       @default(false)
   paymentMethod                  PaymentMethod
   paymentDate                    DateTime
+  paymentAmount                  Int
   paymentReferenceId             String?
   paymentAmountCollectedByDealer Int?
   customerSaleId                 Int           @unique
@@ -556,6 +573,7 @@ model CustomerSaleInvoice {
   customerSaleId           Int                     @unique
   customerSale             CustomerSale            @relation(fields: [customerSaleId], references: [id])
   invoiceStatus            InvoiceStatus
+  invoiceAmount            Int
   producerLocationId       Int
   producerLocation         ProducerLocation        @relation(fields: [producerLocationId], references: [id])
   // otherSaleId    String
@@ -693,6 +711,16 @@ enum FuelType {
 enum LocationNoteType {
   CREATED
   SUSPENDED
+  MANUAL
+}
+
+enum CustomerSaleNoteType {
+  CREATED
+  TERMINATED
+  VOIDED
+  CANCELLED
+  EXPIRED
+  PENDING_DOWN_PAYMENT
   MANUAL
 }
 

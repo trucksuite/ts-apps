@@ -3,5 +3,5 @@
 </script>
 
 <div class="flex">
-  <h2 class="h2">{text}</h2>
+  <h2>{text}</h2>
 </div>

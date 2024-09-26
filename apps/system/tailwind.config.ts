@@ -2,9 +2,9 @@ import type { Config } from 'tailwindcss';
 import { join } from 'path';
 import colors from 'tailwindcss/colors';
 import { skeleton } from '@skeletonlabs/tw-plugin';
-import { customTheme } from './src/custom-theme';
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
+import { customTheme } from './custom-theme';
 
 export default {
 	darkMode: 'class',
@@ -20,7 +20,7 @@ export default {
 			'ts-blue': '#1575CF',
 			'ts-gray-md': '#D5D5D5',
 			white: colors.white,
-			black: colors.black
+			'ts-black': '#141414'
 		}
 	},
 	plugins: [

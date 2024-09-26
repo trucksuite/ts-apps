@@ -18,7 +18,7 @@
 					style={`background-image: url('${welcomeBg}')`}
 				>
 					<div
-						class="bg-surface-100 box-border flex h-auto w-auto flex-col items-center justify-center gap-2 rounded-lg bg-opacity-90 px-20 py-14"
+						class="bg-surface-100 box-border flex h-auto w-auto flex-col items-center justify-center gap-2 rounded-lg bg-opacity-90 px-20 py-10"
 					>
 						<LogoSystemLg />
 						<button type="button" class="btn-primary shadow-xl" on:click={() => goto('/dashboard')}

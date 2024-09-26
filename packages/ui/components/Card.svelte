@@ -1,9 +1,4 @@
 <script lang="ts">
-  import { SvelteComponent } from 'svelte';
-  import Person from '../assets/icons/person.svelte';
-
-  import LogoSystem from './logos/LogoSystem.svelte';
-
   export let src = '';
   export let headerText = '';
   export let icon: ConstructorOfATypedSvelteComponent;
@@ -18,7 +13,7 @@
     <img {src} class="bg-black/50 w-full aspect-[21/9]" alt="Post" />
   </header>
   <div class="p-4 space-y-4">
-    <h3 class="h3 flex items-center gap-3"><svelte:component this={icon} />{headerText}</h3>
+    <h3 class="flex items-center gap-3"><svelte:component this={icon} />{headerText}</h3>
     <article>
       <slot />
     </article>
