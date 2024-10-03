@@ -1,0 +1,43 @@
+model CustomerSaleInvoice {
+  id                       Int                     @id @default(autoincrement())
+  publicId                 String                  @unique @map("public_id") @db.VarChar(12)
+  createdAt                DateTime                @default(now())
+  updatedAt                DateTime                @updatedAt
+  customerSaleId           Int                     @unique
+  customerSale             CustomerSale            @relation(fields: [customerSaleId], references: [id])
+  invoiceStatus            InvoiceStatus
+  invoiceAmount            Int
+  dueDate                  DateTime
+  producerLocationId       Int
+  producerLocation         ProducerLocation        @relation(fields: [producerLocationId], references: [id])
+  // otherSaleId    String
+  // OtherSale      OtherSale?    @relation(fields: [otherSaleId], references: [id])
+  // @@index([otherSaleId])
+  producerAdmin            ProducerAdmin?          @relation(fields: [producerAdminId], references: [id])
+  producerAdminId          Int?
+  locationInvoicePayment   LocationInvoicePayment? @relation(fields: [locationInvoicePaymentId], references: [id])
+  locationInvoicePaymentId Int?
+
+  @@index([customerSaleId])
+  @@index([producerLocationId])
+  @@index([locationInvoicePaymentId])
+  @@index([producerAdminId])
+}
+
+model LocationInvoicePayment {
+  id                 Int                   @id @default(autoincrement())
+  publicId           String                @unique @map("public_id") @db.VarChar(12)
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  invoices           CustomerSaleInvoice[]
+  paymentMethod      PaymentMethod
+  paymentDate        DateTime
+  paymentAmount      Int
+  producerLocation   ProducerLocation?     @relation(fields: [producerLocationId], references: [id])
+  producerLocationId Int?
+  producerAdminId    Int
+  producerAdmin      ProducerAdmin?        @relation(fields: [producerAdminId], references: [id])
+
+  @@index([producerLocationId])
+  @@index([producerAdminId])
+}

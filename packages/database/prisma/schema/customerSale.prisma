@@ -1,0 +1,70 @@
+model CustomerSaleDownPayment {
+  id                             Int           @id @default(autoincrement())
+  publicId                       String        @unique @map("public_id") @db.VarChar(12)
+  createdAt                      DateTime      @default(now())
+  updatedAt                      DateTime      @updatedAt
+  paymentAuthorized              Boolean       @default(false)
+  paymentMethod                  PaymentMethod
+  paymentDate                    DateTime
+  paymentAmount                  Int
+  paymentReferenceId             String?
+  paymentAmountCollectedByDealer Int?
+  customerSaleId                 Int           @unique
+  customerSale                   CustomerSale  @relation(fields: [customerSaleId], references: [id])
+}
+
+model CustomerSale {
+  id                               Int                      @id @default(autoincrement())
+  publicId                         String                   @unique @map("public_id") @db.VarChar(12)
+  createdAt                        DateTime                 @default(now())
+  updatedAt                        DateTime                 @updatedAt
+  customerId                       Int
+  customer                         Customer                 @relation(fields: [customerId], references: [id])
+  truckId                          Int
+  truck                            Truck                    @relation(fields: [truckId], references: [id])
+  lienholderId                     Int?
+  lienholder                       TruckLienholder?         @relation(fields: [lienholderId], references: [id])
+  selectedWarrantyProductId        Int
+  selectedWarrantyProduct          SelectedWarrantyProduct  @relation(fields: [selectedWarrantyProductId], references: [id])
+  saleDate                         DateTime?
+  includedInRetailPrice            Boolean                  @default(false)
+  financedDeal                     Boolean                  @default(false)
+  quotedSalePrice                  Int
+  finalRetailWarrantyPurchasePrice Int
+  saleCurrency                     String
+  customerSaleDownPaymentId        Int?                     @unique
+  customerSaleDownPayment          CustomerSaleDownPayment?
+  customerSummaryOrDeclinationUrl  String?
+  customerSaleInvoiceId            Int                      @unique
+  customerSaleInvoice              CustomerSaleInvoice?
+  customerSaleStatus               CustomerSaleStatus
+  producerId                       Int
+  producer                         Producer                 @relation(fields: [producerId], references: [id])
+  producerLocation                 ProducerLocation         @relation(fields: [producerLocationId], references: [id])
+  producerLocationId               Int
+  producerAdmin                    ProducerAdmin            @relation(fields: [producerAdminId], references: [id])
+  producerAdminId                  Int
+  expirationDate                   DateTime?
+  notes                            CustomerSaleNote[]
+
+  @@index([producerLocationId])
+  @@index([producerAdminId])
+  @@index([customerId])
+  @@index([truckId])
+  @@index([lienholderId])
+  @@index([selectedWarrantyProductId])
+  @@index([producerId])
+}
+
+model CustomerSaleNote {
+  id             Int                  @id @default(autoincrement())
+  publicId       String               @unique @map("public_id") @db.VarChar(12)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  note           String               @db.LongText
+  type           CustomerSaleNoteType
+  customerSaleId Int
+  customerSale   CustomerSale         @relation(fields: [customerSaleId], references: [id], onDelete: Cascade)
+
+  @@index([customerSaleId])
+}

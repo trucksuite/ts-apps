@@ -1,0 +1,108 @@
+model WarrantyRatesheet {
+  id               Int                                   @id @default(autoincrement())
+  publicId         String                                @unique @map("public_id") @db.VarChar(12)
+  createdAt        DateTime                              @default(now())
+  updatedAt        DateTime                              @updatedAt
+  name             String                                @unique
+  title            String
+  subtitle         String                                @db.Text
+  lowMileageCutoff Int?
+  isVocational     Boolean?                              @default(false)
+  rows             WarrantyRatesheetRow[]
+  vocationalRows   WarrantyVocationalRatesheetRow[]
+  options          WarrantyRatesheetOption[]
+  disclosures      WarrantyRatesheetDisclosure[]
+  coverages        WarrantyRatesheetCoverage[]
+  rateOutputs      LocationWarrantyRatesheetRateOutput[]
+
+  @@index([name])
+}
+
+model WarrantyRatesheetRow {
+  id             Int               @id @default(autoincrement())
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  termValue      Int
+  termUnit       TermUnits
+  mileageValue   Int
+  nlm            Int?
+  nhm            Int?
+  olm            Int?
+  ohm            Int?
+  deductible     Int
+  aggregateLimit Int
+  ratesheetId    Int
+  ratesheet      WarrantyRatesheet @relation(fields: [ratesheetId], references: [id])
+
+  @@index([ratesheetId])
+}
+
+model WarrantyVocationalRatesheetRow {
+  id             Int               @id @default(autoincrement())
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  termValue      Int
+  termUnit       TermUnits
+  mileageValue   Int
+  rate           Int?
+  deductible     Int
+  aggregateLimit Int
+  vocationalType String
+  ratesheetId    Int
+  ratesheet      WarrantyRatesheet @relation(fields: [ratesheetId], references: [id])
+
+  @@index([ratesheetId])
+}
+
+model WarrantyRatesheetOption {
+  id                 Int                 @id @default(autoincrement())
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  packageName        String
+  termValue          Int
+  termUnit           TermUnits
+  cost               Int
+  refrigerationHours Int?
+  ratesheets         WarrantyRatesheet[]
+}
+
+model WarrantyRatesheetDisclosure {
+  id          Int                 @id @default(autoincrement())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  title       String
+  description String              @db.Text
+  order       Int
+  ratesheets  WarrantyRatesheet[]
+}
+
+model WarrantyRatesheetCoverage {
+  id          Int                 @id @default(autoincrement())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  title       String
+  description String              @db.Text
+  order       Int
+  ratesheets  WarrantyRatesheet[]
+}
+
+model LocationWarrantyRatesheetRateOutput {
+  id                                Int                             @id @default(autoincrement())
+  publicId                          String                          @unique @map("public_id") @db.VarChar(12)
+  createdAt                         DateTime                        @default(now())
+  updatedAt                         DateTime                        @updatedAt
+  label                             String                          @default("")
+  color                             String                          @default("primary")
+  logoUrl                           String?
+  producerLocationId                Int
+  producerLocation                  ProducerLocation                @relation(fields: [producerLocationId], references: [id])
+  ratesheetId                       Int
+  ratesheet                         WarrantyRatesheet               @relation(fields: [ratesheetId], references: [id])
+  markups                           LocationWarrantyProductMarkup[]
+  LocationAssignedWarrantyProductId Int
+  LocationAssignedWarrantyProduct   LocationAssignedWarrantyProduct @relation(fields: [LocationAssignedWarrantyProductId], references: [id])
+
+  @@index([producerLocationId])
+  @@index([ratesheetId])
+  @@index([LocationAssignedWarrantyProductId])
+}

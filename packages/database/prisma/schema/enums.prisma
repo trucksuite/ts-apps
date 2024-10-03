@@ -1,0 +1,104 @@
+enum LocationType {
+  DEALERSHIP
+  REPAIR_SHOP
+  LENDER
+  FLEET
+  ASSOCIATION
+  TRAVEL_CENTER
+  OTHER
+}
+
+enum TermUnits {
+  DAYS
+  MONTHS
+  YEARS
+}
+
+enum MileageUnits {
+  MILES
+  KILOMETERS
+}
+
+enum WarrantyProductOptions {
+  TRANSMISSION_AND_DIFFERENTIAL
+  APU
+  HVAC
+  REFRIGERATION
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  ACH
+  CHECK
+  WIRE
+}
+
+enum CustomerSaleStatus {
+  IN_PROGRESS
+  DECLINED
+  QUOTE
+  COMPLETED
+}
+
+enum CustomerAgreementStatus {
+  ACTIVE // Agreement is active
+  VOID // Agreement is inactive with a refund
+  TERMINATED // Agreement is inactive without a refund
+  EXPIRED // Agreement is inactive due to reaching the maximum mileage or term length
+  MAXED_OUT // Agreement is inactive due to the full aggregate limit being reached
+}
+
+enum InvoiceStatus {
+  PAID
+  UNPAID
+  PAID_DOWN // Invoice is for a downpayment
+  DUE_SOON // Invoice is due within 5 days
+  OVERDUE // Invoice is past due
+}
+
+enum InvoicePaymentStatus {
+  RECEIVED // Invoice Payment has been completed
+  PENDING // Invoice Payment is pending or in progress
+  ON_HOLD // Invoice Payment is on hold for some reason
+}
+
+enum ProducerStatus {
+  STARTED
+  PENDING_REVIEW
+  ACTIVE
+  INACTIVE
+}
+
+enum LocationStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum FuelType {
+  DIESEL
+  GAS
+  ELECTRIC
+}
+
+enum LocationNoteType {
+  CREATED
+  SUSPENDED
+  MANUAL
+}
+
+enum CustomerSaleNoteType {
+  CREATED
+  TERMINATED
+  VOIDED
+  CANCELLED
+  EXPIRED
+  PENDING_DOWN_PAYMENT
+  MANUAL
+}
+
+enum YearMileageLimits {
+  OLDER_LOW_MILEAGE
+  OLDER_HIGH_MILEAGE
+  NEWER_LOW_MILEAGE
+  NEWER_HIGH_MILEAGE
+}

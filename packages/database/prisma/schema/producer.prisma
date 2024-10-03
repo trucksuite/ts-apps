@@ -1,0 +1,35 @@
+model Producer {
+  id                              Int                            @id @default(autoincrement())
+  publicId                        String                         @unique @map("public_id") @db.VarChar(12)
+  createdAt                       DateTime                       @default(now())
+  updatedAt                       DateTime                       @updatedAt
+  name                            String
+  dba                             String?
+  taxId                           String?
+  website                         String?
+  address                         String
+  city                            String
+  state                           String
+  zip                             String
+  country                         String
+  primaryContactName              String
+  primaryContactTitle             String?
+  primaryContactPhone             String
+  primaryContactEmail             String
+  status                          ProducerStatus                 @default(STARTED)
+  logoUrl                         String?
+  locations                       ProducerLocation[]
+  admins                          ProducerAdmin[]
+  producerAgreementId             String?
+  truckSuiteSalesRepresentative   TruckSuiteSalesRepresentative? @relation(fields: [truckSuiteSalesRepresentativeId], references: [id])
+  truckSuiteSalesRepresentativeId Int?
+  customerSale                    CustomerSale[]
+
+  @@index([publicId])
+  @@index([name])
+  @@index([dba])
+  @@index([city])
+  @@index([state])
+  @@index([producerAgreementId])
+  @@index([truckSuiteSalesRepresentativeId])
+}

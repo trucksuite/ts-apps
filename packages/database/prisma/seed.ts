@@ -157,6 +157,20 @@ async function main() {
     'Created warranty product category with public id: ',
     fakeWarrantyProductCategory.publicId
   );
+  const fakeWarrantyProductCategory2 = await prisma.warrantyProductCategory.create({
+    data: {
+      id: 2,
+      publicId: generatePublicId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      name: 'Vocational'
+    }
+  });
+
+  console.log(
+    'Created warranty product category with public id: ',
+    fakeWarrantyProductCategory2.publicId
+  );
 
   const fakeWarrantyProduct = await prisma.warrantyProduct.create({
     data: {
@@ -168,7 +182,7 @@ async function main() {
       fuelType: 'DIESEL',
       warrantyProductCategoryId: fakeWarrantyProductCategory.id,
       warrantyAgreementId: 1,
-      warrantyTerms: {
+      ratesPackages: {
         create: [
           {
             id: 1,
@@ -178,68 +192,87 @@ async function main() {
             termValue: 12,
             termUnit: 'MONTHS',
             mileageValue: 10000,
-            mileageUnit: 'MILES'
+            mileageUnit: 'MILES',
+            yearMileageLimit: 'NEWER_LOW_MILEAGE',
+            deductible: 500,
+            aggregateLimit: 10000,
+            rate: 1000
           },
           {
             id: 2,
             publicId: generatePublicId(),
             createdAt: new Date(),
             updatedAt: new Date(),
-            termValue: 24,
+            termValue: 12,
             termUnit: 'MONTHS',
             mileageValue: 20000,
-            mileageUnit: 'MILES'
+            mileageUnit: 'MILES',
+            yearMileageLimit: 'NEWER_HIGH_MILEAGE',
+            deductible: 500,
+            aggregateLimit: 20000,
+            rate: 2000
           },
           {
             id: 3,
             publicId: generatePublicId(),
             createdAt: new Date(),
             updatedAt: new Date(),
-            termValue: 36,
+            termValue: 12,
             termUnit: 'MONTHS',
             mileageValue: 30000,
-            mileageUnit: 'MILES'
+            mileageUnit: 'MILES',
+            yearMileageLimit: 'OLDER_LOW_MILEAGE',
+            deductible: 500,
+            aggregateLimit: 30000,
+            rate: 3000
           },
           {
             id: 4,
             publicId: generatePublicId(),
             createdAt: new Date(),
             updatedAt: new Date(),
-            termValue: 48,
+            termValue: 12,
             termUnit: 'MONTHS',
             mileageValue: 40000,
-            mileageUnit: 'MILES'
+            mileageUnit: 'MILES',
+            yearMileageLimit: 'OLDER_HIGH_MILEAGE',
+            deductible: 500,
+            aggregateLimit: 40000,
+            rate: 4000
           }
         ]
       },
-      warrantyOptions: {
+      optionsPackages: {
         create: [
           {
             id: 1,
             publicId: generatePublicId(),
             createdAt: new Date(),
             updatedAt: new Date(),
-            name: 'HVAC',
+            type: 'HVAC',
             termValue: 12,
-            termUnit: 'MONTHS'
+            termUnit: 'MONTHS',
+            rate: 1000
           },
           {
             id: 2,
             publicId: generatePublicId(),
             createdAt: new Date(),
             updatedAt: new Date(),
-            name: 'APU',
+            type: 'APU',
             termValue: 12,
-            termUnit: 'MONTHS'
+            termUnit: 'MONTHS',
+            rate: 2000
           },
           {
             id: 3,
             publicId: generatePublicId(),
             createdAt: new Date(),
             updatedAt: new Date(),
-            name: 'Trans & Diff',
+            type: 'Trans & Diff',
             termValue: 12,
-            termUnit: 'MONTHS'
+            termUnit: 'MONTHS',
+            rate: 3000
           }
         ]
       }
@@ -262,7 +295,7 @@ async function main() {
 
   console.log('Created warranty agreement with public id: ', fakeWarrantyAgreement.publicId);
 
-  const fakeLocationWarrantyProductAssigned1 = await prisma.locationWarrantyProductAssigned.create({
+  const fakeLocationWarrantyProductAssigned1 = await prisma.locationAssignedWarrantyProduct.create({
     data: {
       id: 1,
       publicId: generatePublicId(),
@@ -273,7 +306,7 @@ async function main() {
     }
   });
 
-  const fakeLocationWarrantyProductAssigned2 = await prisma.locationWarrantyProductAssigned.create({
+  const fakeLocationWarrantyProductAssigned2 = await prisma.locationAssignedWarrantyProduct.create({
     data: {
       id: 2,
       publicId: generatePublicId(),
@@ -284,7 +317,7 @@ async function main() {
     }
   });
 
-  const fakeLocationWarrantyProductAssigned3 = await prisma.locationWarrantyProductAssigned.create({
+  const fakeLocationWarrantyProductAssigned3 = await prisma.locationAssignedWarrantyProduct.create({
     data: {
       id: 3,
       publicId: generatePublicId(),
@@ -307,7 +340,7 @@ async function main() {
         logoUrl: 'https://www.joestrucking.com/logo.png',
         producerLocationId: fakeProducerLocation1.id,
         ratesheetId: 1,
-        locationWarrantyProductAssignedId: fakeLocationWarrantyProductAssigned1.id
+        LocationAssignedWarrantyProductId: fakeLocationWarrantyProductAssigned1.id
       }
     });
 
@@ -990,7 +1023,7 @@ async function main() {
 
   console.log('Created truck lienholder with public id: ', fakeTruckLienholder.publicId);
 
-  const fakeWarrantySignedAgreement = await prisma.warrantySignedAgreement.create({
+  const fakeWarrantySignedAgreement = await prisma.signedWarrantyAgreement.create({
     data: {
       id: 1,
       publicId: generatePublicId(),
@@ -998,33 +1031,34 @@ async function main() {
       updatedAt: new Date(),
       warrantyAgreementId: 1,
       abodeSignId: generatePublicId(),
-      url: 'https://www.example.com'
+      url: 'https://www.example.com',
+      selectedWarrantyProductId: 1
     }
   });
 
   console.log('Created signed agreement with public id: ', fakeWarrantySignedAgreement.publicId);
 
-  const fakeWarrantyTermSelected = await prisma.warrantyTermSelected.create({
+  const fakeWarrantyTermSelected = await prisma.selectedWarrantyTerm.create({
     data: {
       id: 1,
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      warrantyTermId: 1,
-      warrantyProductSelectedId: 1
+      ratesPackageId: 1,
+      selectedWarrantyProductId: 1
     }
   });
 
   console.log('Created warranty term selected with public id: ', fakeWarrantyTermSelected.publicId);
 
-  const fakeWarrantyOptionsSelected = await prisma.warrantyOptionsSelected.create({
+  const fakeWarrantyOptionsSelected = await prisma.selectedWarrantyOptions.create({
     data: {
       id: 1,
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      warrantyProductSelectedId: 1,
-      warrantyOptions: {
+      selectedWarrantyProductId: 1,
+      optionsPackages: {
         connect: [
           {
             id: 1
@@ -1045,13 +1079,14 @@ async function main() {
     fakeWarrantyOptionsSelected.publicId
   );
 
-  const fakeWarrantyProductSelected = await prisma.warrantyProductSelected.create({
+  const fakeWarrantyProductSelected = await prisma.selectedWarrantyProduct.create({
     data: {
       id: 1,
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      locationWarrantyProductAssignedId: 1,
+      locationWarrantyProductId: 1,
+      signedAgreementId: 1, // Add this line
       termSelected: {
         connect: {
           id: 1
@@ -1076,6 +1111,7 @@ async function main() {
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      dueDate: new Date(),
       customerSaleId: 1,
       invoiceAmount: 9500,
       invoiceStatus: 'DUE_SOON',
@@ -1099,7 +1135,7 @@ async function main() {
       customerId: fakeCustomer1.id,
       truckId: fakeTruck1.id,
       lienholderId: fakeTruckLienholder.id,
-      warrantyProductSelectedId: fakeWarrantyProductSelected.id,
+      selectedWarrantyProductId: fakeWarrantyProductSelected.id,
       saleDate: new Date(),
       includedInRetailPrice: false,
       financedDeal: false,
@@ -1167,6 +1203,7 @@ async function main() {
       publicId: generatePublicId(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      dueDate: new Date(),
       customerSaleId: 2,
       invoiceAmount: 9500,
       invoiceStatus: 'DUE_SOON',
@@ -1190,7 +1227,7 @@ async function main() {
       customerId: fakeCustomer2.id,
       truckId: fakeTruck2.id,
       lienholderId: fakeTruckLienholder.id,
-      warrantyProductSelectedId: fakeWarrantyProductSelected.id,
+      selectedWarrantyProductId: fakeWarrantyProductSelected.id,
       saleDate: new Date(new Date().setFullYear(new Date().getFullYear() - 2)),
       includedInRetailPrice: false,
       financedDeal: false,
@@ -1219,7 +1256,8 @@ async function main() {
       paymentMethod: 'CREDIT_CARD',
       paymentDate: new Date(),
       paymentAmount: 9500,
-      producerLocationId: fakeProducerLocation1.id
+      producerLocationId: fakeProducerLocation1.id,
+      producerAdminId: fakeProducerAdmin.id
     }
   });
 

@@ -1,0 +1,466 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider     = "mysql"
+  // url               = env("VITE_DATABASE_URL") // PROD
+  url          = env("LOCAL_DATABASE_URL") // DEV
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model TruckSuiteSalesRepresentative {
+  id        Int                @id @default(autoincrement())
+  publicId  String             @unique @map("public_id") @db.VarChar(12)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  userId    String?
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  address   String
+  city      String
+  state     String
+  zip       String
+  country   String
+  locations ProducerLocation[]
+  producers Producer[]
+}
+
+// model CustomerSale {
+//   id           Int             @id @default(autoincrement())
+//   publicId     String             @unique @map("public_id") @db.VarChar(12)
+//   createdAt    DateTime           @default(now())
+//   updatedAt    DateTime           @updatedAt
+//   customerSale CustomerSale[]
+//   otherSale    OtherSale[]
+//   status       CustomerSaleStatus
+//   invoice      Invoice[]
+// }
+
+// model OtherSale {
+//   id             Int       @id @default(autoincrement())
+//   publicId       String       @unique @map("public_id") @db.VarChar(12)
+//   createdAt      DateTime     @default(now())
+//   updatedAt      DateTime     @updatedAt
+//   customerSale   CustomerSale @relation(fields: [customerSaleId], references: [id])
+//   invoice        Invoice[]
+//   customerSaleId Int
+// }
+
+// model Producer {
+//   Int                  String          @id @default(autoincrement())
+//   createdAt           DateTime        @default(now())
+//   updatedAt           DateTime        @updatedAt
+//   name                String
+//   dba                 String?
+//   taxId               String?
+//   website             String?
+//   type                String
+//   address             String
+//   city                String
+//   state               String
+//   zip                 String
+//   country             String         
+//   primaryContactName  String
+//   primaryContactTitle String?
+//   primaryContactPhone String
+//   primaryContactEmail String
+//   tsSalesRepId        String
+//   locations           ProducerLocation[]
+//   status              ProducerStatus  @default(STARTED)
+//   logoUrl             String?
+//   producerAdmins      ProducerAdmin[]
+
+//   @@index([name])
+//   @@index([dba])
+//   @@index([city])
+//   @@index([state])
+//   @@index([tsSalesRepId])
+// }
+
+// model ProducerAdmin {
+//   Int            String         @id @default(autoincrement())
+//   createdAt     DateTime       @default(now())
+//   updatedAt     DateTime       @updatedAt
+//   email         String
+//   firstName     String
+//   lastName      String
+//   phone         String?
+//   producerId    String
+//   producer      Producer       @relation(fields: [producerId], references: [id], onDelete: Cascade)
+//   locations     ProducerLocation[]
+//   customerSales CustomerSale[]
+//   invoices      Invoice[]
+
+//   @@unique([email, producerId])
+//   @@index([producerId])
+// }
+
+// model ProducerLocation {
+//   Int                  String               @id @default(autoincrement())
+//   createdAt           DateTime             @default(now())
+//   updatedAt           DateTime             @updatedAt
+//   name                String
+//   phone               String
+//   email               String
+//   website             String?
+//   address             String
+//   city                String
+//   state               String
+//   zip                 String
+//   country             String              
+//   mailingAddress      String?
+//   mailingCity         String?
+//   mailingState        String?
+//   mailingZip          String?
+//   mailingCountry      String?             
+//   tsSalesRepId        String
+//   producerId          String?
+//   producer            Producer?            @relation(fields: [producerId], references: [id], onDelete: SetNull)
+//   locationProducts    LocationProduct[]
+//   locationContacts    LocationContact[]
+//   locationNotes       LocationNote[]
+//   main                Boolean              @default(false)
+//   generatedRatesheets GeneratedRatesheet[]
+//   producerAdmins      ProducerAdmin[]
+//   customerSales       CustomerSale[]
+//   Invoices            Invoice[]
+
+//   @@index([producerId])
+//   @@index([name])
+//   @@index([tsSalesRepId])
+// }
+
+// model LocationProduct {
+//   Int                   String               @id @default(autoincrement())
+//   createdAt            DateTime             @default(now())
+//   updatedAt            DateTime             @updatedAt
+//   name                 String
+//   locationMarkups      LocationMarkup[]
+//   locationId           String
+//   location             ProducerLocation           @relation(fields: [locationId], references: [id], onDelete: Cascade)
+//   rateOutputId         String?
+//   ratesheetId          String?
+//   generatedRatesheet   GeneratedRatesheet[]
+//   generatedRatesheetId String?
+
+//   @@index([locationId])
+// }
+
+// model LocationMarkup {
+//   Int                String          @id @default(autoincrement())
+//   createdAt         DateTime        @default(now())
+//   updatedAt         DateTime        @updatedAt
+//   termValue         String
+//   markupValue       String
+//   locationProductId String
+//   locationProduct   LocationProduct @relation(fields: [locationProductId], references: [id], onDelete: Cascade)
+
+//   @@index([locationProductId])
+// }
+
+// model LocationNote {
+//   Int         String     @id @default(autoincrement())
+//   createdAt  DateTime   @default(now())
+//   updatedAt  DateTime   @updatedAt
+//   note       String     @db.LongText
+//   locationId String
+//   location   ProducerLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+//   @@index([locationId])
+// }
+
+// model LocationContact {
+//   Int           String        @id @default(autoincrement())
+//   createdAt    DateTime      @default(now())
+//   updatedAt    DateTime      @updatedAt
+//   email        String
+//   firstName    String
+//   lastName     String
+//   phone        String?
+//   role         String
+//   title        String?
+//   locationId   String
+//   location     ProducerLocation?   @relation(fields: [locationId], references: [id], onDelete: Cascade)
+//   spiffProduct SpiffProduct?
+
+//   @@unique([email, locationId])
+//   @@index([locationId])
+// }
+
+// model ProducerAgreementSentBy {
+//   Int            String   @id @default(autoincrement())
+//   createdAt     DateTime @default(now())
+//   updatedAt     DateTime @updatedAt
+//   senderName    String
+//   producerName  String
+//   producerEmail String
+// }
+
+// // model Customer {
+// Int   id           String         @id @default(autoincrement())
+// //   createdAt    DateTime       @default(now())
+// //   updatedAt    DateTime       @updatedAt
+// //   firstName    String
+// //   lastName     String
+// //   email        String
+// //   phone        String?
+// //   address      String
+// //   city         String
+// //   state        String
+// //   zip          String
+// //   country      String        
+// //   customerSale CustomerSale[]
+// // }
+
+// model Truck {
+//   Int             String         @id @default(autoincrement())
+//   createdAt       DateTime       @default(now())
+//   updatedAt       DateTime       @updatedAt
+//   year            String
+//   make            String
+//   model           String
+//   gvwr            String
+//   mileage         String
+//   vehicleType     String?
+//   fuelType        String?
+//   apuMake         String?
+//   apuSerialNum    String?
+//   apuHours        String?
+//   engineSerialNum String?
+//   customerSale    CustomerSale[]
+// }
+
+// model Lienholder {
+//   Int           String         @id @default(autoincrement())
+//   createdAt    DateTime       @default(now())
+//   updatedAt    DateTime       @updatedAt
+//   name         String
+//   address      String?
+//   city         String?
+//   state        String?
+//   zip          String?
+//   country      String?       
+//   phone        String?
+//   email        String?
+//   customerSale CustomerSale[]
+// }
+
+// model WarrantyProduct {
+//   Int              String           @id @default(autoincrement())
+//   createdAt       DateTime         @default(now())
+//   updatedAt       DateTime         @updatedAt
+//   name            String
+//   wholesaleCost   String?
+//   termLength      String?
+//   termUnit        String?
+//   warrantyOptions WarrantyOption[]
+//   customerSale    CustomerSale[]
+// }
+
+// model WarrantyOption {
+//   Int                String           @id @default(autoincrement())
+//   createdAt         DateTime         @default(now())
+//   updatedAt         DateTime         @updatedAt
+//   name              String
+//   wholesaleCost     String?
+//   warrantyProduct   WarrantyProduct? @relation(fields: [warrantyProductId], references: [id])
+//   warrantyProductId String?
+
+//   @@index([warrantyProductId])
+// }
+
+// model GapProduct {
+//   Int            String         @id @default(autoincrement())
+//   createdAt     DateTime       @default(now())
+//   updatedAt     DateTime       @updatedAt
+//   name          String
+//   wholesaleCost String?
+//   termLength    String?
+//   termUnit      String?
+//   customerSale  CustomerSale[]
+// }
+
+// model FutureProduct {
+//   Int            String   @id @default(autoincrement())
+//   createdAt     DateTime @default(now())
+//   updatedAt     DateTime @updatedAt
+//   name          String
+//   wholesaleCost String?
+//   termLength    String?
+//   termUnit      String?
+// }
+
+// model FinanceProduct {
+//   Int            String         @id @default(autoincrement())
+//   createdAt     DateTime       @default(now())
+//   updatedAt     DateTime       @updatedAt
+//   totalCost     String
+//   totalOwed     String?
+//   totalPaid     String?
+//   paymentAmount String
+//   frequency     Frequency      @default(MONTHLY)
+//   financeLength String
+//   customerSale  CustomerSale[]
+// }
+
+// model InspectionForm {
+//   Int           String         @id @default(autoincrement())
+//   createdAt    DateTime       @default(now())
+//   updatedAt    DateTime       @updatedAt
+//   fileId       String         @unique
+//   customerSale CustomerSale[]
+// }
+
+// model WarrantyAgreement {
+//   Int           String         @id @default(autoincrement())
+//   createdAt    DateTime       @default(now())
+//   updatedAt    DateTime       @updatedAt
+//   fileId       String         @unique
+//   vin          String         @unique
+//   customerSale CustomerSale[]
+// }
+
+// model CustomerSale {
+//   Int                 String             @id @default(autoincrement())
+//   createdAt          DateTime           @default(now())
+//   updatedAt          DateTime           @updatedAt
+//   totalCost          String?
+//   customerId         String
+//   customer           Customer           @relation(fields: [customerId], references: [id])
+//   lienholderId       String?
+//   lienholder         Lienholder?        @relation(fields: [lienholderId], references: [id])
+//   truckVin           String
+//   truck              Truck              @relation(fields: [truckVin], references: [vin])
+//   warrantyProductId  String?
+//   warrantyProduct    WarrantyProduct?   @relation(fields: [warrantyProductId], references: [id])
+//   gapProductId       String?
+//   gapProduct         GapProduct?        @relation(fields: [gapProductId], references: [id])
+//   financeProductId   String?
+//   financeProduct     FinanceProduct?    @relation(fields: [financeProductId], references: [id])
+//   inspectionFormId   String?
+//   inspectionForm     InspectionForm?    @relation(fields: [inspectionFormId], references: [id])
+//   warrantyAgreementId String?
+//   warrantyAgreement   WarrantyAgreement?  @relation(fields: [warrantyAgreementId], references: [id])
+//   status             CustomerSaleStatus @default(PENDING)
+//   Invoice            Invoice[]
+//   producerAdminId    String
+//   producerAdmin      ProducerAdmin      @relation(fields: [producerAdminId], references: [id])
+//   locationId         String
+//   location           ProducerLocation         @relation(fields: [locationId], references: [id])
+
+//   @@index([customerId])
+//   @@index([lienholderId])
+//   @@index([truckVin])
+//   @@index([warrantyProductId])
+//   @@index([gapProductId])
+//   @@index([financeProductId])
+//   @@index([inspectionFormId])
+//   @@index([warrantyAgreementId])
+//   @@index([producerAdminId])
+//   @@index([locationId])
+// }
+
+// model Invoice {
+//   Int              String           @id @default(autoincrement())
+//   createdAt       DateTime         @default(now())
+//   updatedAt       DateTime         @updatedAt
+//   totalAmount     String
+//   dueDate         String
+//   paymentDate     String?
+//   customerSaleId  String
+//   customerSale    CustomerSale     @relation(fields: [customerSaleId], references: [id])
+//   invoicePayment  InvoicePayment[]
+//   bundleId        String?
+//   bundle          Bundle?          @relation(fields: [bundleId], references: [id])
+//   producerAdminId String
+//   producerAdmin   ProducerAdmin    @relation(fields: [producerAdminId], references: [id])
+//   locationId      String
+//   location        ProducerLocation       @relation(fields: [locationId], references: [id])
+
+//   @@index([customerSaleId])
+//   @@index([bundleId])
+//   @@index([producerAdminId])
+//   @@index([locationId])
+// }
+
+// model InvoicePayment {
+//   Int            String   @id @default(autoincrement())
+//   createdAt     DateTime @default(now())
+//   updatedAt     DateTime @updatedAt
+//   paymentAmount String
+//   paymentDate   String
+//   invoiceId     String
+//   invoice       Invoice  @relation(fields: [invoiceId], references: [id])
+
+//   @@index([invoiceId])
+// }
+
+// model SpiffProduct {
+//   Int                String          @id @default(autoincrement())
+//   createdAt         DateTime        @default(now())
+//   updatedAt         DateTime        @updatedAt
+//   amountDue         String
+//   paidDate          String?
+//   locationContactId String          @unique
+//   locationContact   LocationContact @relation(fields: [locationContactId], references: [id])
+
+//   @@index([locationContactId])
+// }
+
+// model GeneratedRatesheet {
+//   Int                String           @id @default(autoincrement())
+//   createdAt         DateTime         @default(now())
+//   updatedAt         DateTime         @updatedAt
+//   locationId        String
+//   location          ProducerLocation       @relation(fields: [locationId], references: [id])
+//   locationProductId String?
+//   locationProduct   LocationProduct? @relation(fields: [locationProductId], references: [id])
+
+//   @@index([locationId])
+//   @@index([locationProductId])
+// }
+
+// model Bundle {
+//   Int          String    @id @default(autoincrement())
+//   createdAt   DateTime  @default(now())
+//   updatedAt   DateTime  @updatedAt
+//   totalAmount String
+//   dueDate     String
+//   paymentDate String?
+//   invoices    Invoice[]
+// }
+
+// enum CustomerSaleStatus {
+//   ACTIVE
+//   PENDING
+//   INACTIVE
+//   QUOTE
+// }
+
+// enum Frequency {
+//   WEEKLY
+//   BIWEEKLY
+//   MONTHLY
+//   YEARLY
+//   BIYEARLY
+//   QUARTERLY
+// }
+
+// enum ProducerStatus {
+//   STARTED
+//   PENDING
+//   ACTIVE
+//   INACTIVE
+// }
+
+// enum LocationContactRole {
+//   LOCATION_ADMIN
+//   SALES_MANAGER
+//   SALES_INDIVIDUAL
+//   OTHER
+// }

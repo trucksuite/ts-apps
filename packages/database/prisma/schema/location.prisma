@@ -1,0 +1,127 @@
+model ProducerLocation {
+  id                              Int                                   @id @default(autoincrement())
+  publicId                        String                                @unique @map("public_id") @db.VarChar(12)
+  createdAt                       DateTime                              @default(now())
+  updatedAt                       DateTime                              @updatedAt
+  name                            String
+  phone                           String
+  email                           String
+  website                         String?
+  address                         String
+  city                            String
+  state                           String
+  zip                             String
+  country                         String
+  mailingAddress                  String?
+  mailingCity                     String?
+  mailingState                    String?
+  mailingZip                      String?
+  mailingCountry                  String?
+  main                            Boolean                               @default(false)
+  inspectionRequired              Boolean                               @default(false)
+  type                            LocationType                          @default(DEALERSHIP)
+  producerId                      Int?
+  producer                        Producer?                             @relation(fields: [producerId], references: [id], onDelete: SetNull)
+  assignedWarrantyProducts        LocationAssignedWarrantyProduct[]
+  contacts                        LocationContact[]
+  notes                           LocationNote[]
+  rateOutputs                     LocationWarrantyRatesheetRateOutput[]
+  producerAdmins                  ProducerAdmin[]
+  customerSales                   CustomerSale[]
+  invoices                        CustomerSaleInvoice[]
+  invoicePayments                 LocationInvoicePayment[]
+  truckSuiteSalesRepresentative   TruckSuiteSalesRepresentative?        @relation(fields: [truckSuiteSalesRepresentativeId], references: [id])
+  truckSuiteSalesRepresentativeId Int?
+
+  @@index([producerId])
+  @@index([name])
+  @@index([truckSuiteSalesRepresentativeId])
+}
+
+model LocationAssignedWarrantyProduct {
+  id                                  Int                                   @id @default(autoincrement())
+  publicId                            String                                @unique @map("public_id") @db.VarChar(12)
+  createdAt                           DateTime                              @default(now())
+  updatedAt                           DateTime                              @updatedAt
+  warrantyProductId                   Int
+  warrantyProduct                     WarrantyProduct                       @relation(fields: [warrantyProductId], references: [id])
+  locationId                          Int
+  location                            ProducerLocation                      @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  locationMarkups                     LocationWarrantyProductMarkup[]
+  locationwarrantyRatesheetRateOutput LocationWarrantyRatesheetRateOutput[]
+  // selectedProduct                     SelectedWarrantyProduct[]
+  // warrantyProductTerms WarrantyProductTerm[]
+  // warrantyProductOptions WarrantyProductOption[]
+  SelectedWarrantyProduct             SelectedWarrantyProduct[]
+
+  @@index([locationId])
+  @@index([warrantyProductId])
+}
+
+model LocationWarrantyProductMarkup {
+  id                                Int                                 @id @default(autoincrement())
+  publicId                          String                              @unique @map("public_id") @db.VarChar(12)
+  createdAt                         DateTime                            @default(now())
+  updatedAt                         DateTime                            @updatedAt
+  termValue                         Int
+  termUnit                          TermUnits
+  markupValue                       Int
+  locationWarrantyProductAssignedId Int
+  locationWarrantyProductAssigned   LocationAssignedWarrantyProduct     @relation(fields: [locationWarrantyProductAssignedId], references: [id], onDelete: Cascade)
+  locationRatesheetRateOutputId     Int
+  locationRatesheetRateOutput       LocationWarrantyRatesheetRateOutput @relation(fields: [locationRatesheetRateOutputId], references: [id])
+
+  @@index([locationWarrantyProductAssignedId])
+  @@index([locationRatesheetRateOutputId])
+}
+
+model LocationNote {
+  id         Int              @id @default(autoincrement())
+  publicId   String           @unique @map("public_id") @db.VarChar(12)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  note       String           @db.LongText
+  type       LocationNoteType
+  locationId Int
+  location   ProducerLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([locationId])
+}
+
+model LocationContact {
+  id         Int               @id @default(autoincrement())
+  publicId   String            @unique @map("public_id") @db.VarChar(12)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  firstName  String
+  lastName   String
+  email      String
+  phone      String?
+  role       String?
+  locationId Int
+  location   ProducerLocation? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@unique([email])
+  @@index([locationId])
+}
+
+model ProducerAdmin {
+  id              Int                      @id @default(autoincrement())
+  publicId        String                   @unique @map("public_id") @db.VarChar(12)
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+  userId          String?
+  firstName       String
+  lastName        String
+  email           String
+  phone           String?
+  producerId      Int
+  producer        Producer                 @relation(fields: [producerId], references: [id], onDelete: Cascade)
+  locations       ProducerLocation[]
+  customerSales   CustomerSale[]
+  invoices        CustomerSaleInvoice[]
+  invoicePayments LocationInvoicePayment[]
+
+  @@unique([email, producerId])
+  @@index([producerId])
+}

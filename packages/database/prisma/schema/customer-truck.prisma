@@ -1,0 +1,67 @@
+model Customer {
+  id           Int            @id @default(autoincrement())
+  publicId     String         @unique @map("public_id") @db.VarChar(12)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  firstName    String
+  lastName     String
+  email        String
+  phone        String
+  address      String
+  city         String
+  state        String
+  zip          String
+  country      String
+  trucks       Truck[]
+  customerSale CustomerSale[]
+}
+
+model Truck {
+  id                Int              @id @default(autoincrement())
+  publicId          String           @unique @map("public_id") @db.VarChar(12)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  vin               String
+  odometer          Int
+  odometerUnit      MileageUnits
+  ecm               Int
+  ecmUnit           MileageUnits
+  year              Int
+  make              String
+  model             String
+  engineMakeModel   String
+  engineSerialNum   String
+  gvwr              String
+  vehicleType       String
+  fuelType          String
+  apuMake           String?
+  apuSerialNum      String?
+  apuHours          Int?
+  customerId        Int
+  customer          Customer         @relation(fields: [customerId], references: [id])
+  truckLienholderId Int?
+  truckLienholder   TruckLienholder?
+  customerSale      CustomerSale[]
+
+  @@index([customerId])
+}
+
+model TruckLienholder {
+  id           Int            @id @default(autoincrement())
+  publicId     String         @unique @map("public_id") @db.VarChar(12)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  name         String
+  email        String
+  phone        String
+  address      String
+  city         String
+  state        String
+  zip          String
+  country      String
+  truckId      Int            @unique
+  truck        Truck          @relation(fields: [truckId], references: [id])
+  customerSale CustomerSale[]
+
+  @@index([truckId])
+}

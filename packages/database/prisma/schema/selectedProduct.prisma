@@ -1,0 +1,53 @@
+model SelectedWarrantyProduct {
+  id                        Int                             @id @default(autoincrement())
+  publicId                  String                          @unique @map("public_id") @db.VarChar(12)
+  createdAt                 DateTime                        @default(now())
+  updatedAt                 DateTime                        @updatedAt
+  locationWarrantyProductId Int
+  locationWarrantyProduct   LocationAssignedWarrantyProduct @relation(fields: [locationWarrantyProductId], references: [id])
+  termSelected              SelectedWarrantyTerm?           @relation(map: "SelectedWarrantyProduct_termSelected_fkey")
+  optionsSelected           SelectedWarrantyOptions[]       @relation(map: "SelectedWarrantyProduct_optionsSelected_fkey")
+  customerSale              CustomerSale[]
+  signedAgreementId         Int                             @unique
+  signedAgreement           SignedWarrantyAgreement?
+
+  @@index([locationWarrantyProductId])
+}
+
+model SignedWarrantyAgreement {
+  id                        Int                     @id @default(autoincrement())
+  publicId                  String                  @unique @map("public_id") @db.VarChar(12)
+  createdAt                 DateTime                @default(now())
+  updatedAt                 DateTime                @updatedAt
+  warrantyAgreementId       Int
+  warrantyAgreement         WarrantyAgreement       @relation(fields: [warrantyAgreementId], references: [id])
+  abodeSignId               String?
+  url                       String?
+  selectedWarrantyProductId Int                     @unique
+  selectedWarrantyProduct   SelectedWarrantyProduct @relation(fields: [selectedWarrantyProductId], references: [id])
+
+  @@index([warrantyAgreementId])
+}
+
+model SelectedWarrantyTerm {
+  id                        Int                     @id @default(autoincrement())
+  publicId                  String                  @unique @map("public_id") @db.VarChar(12)
+  createdAt                 DateTime                @default(now())
+  updatedAt                 DateTime                @updatedAt
+  ratesPackageId            Int
+  ratesPackage              WarrantyRatesPackage    @relation(fields: [ratesPackageId], references: [id])
+  selectedWarrantyProductId Int                     @unique
+  selectedWarrantyProduct   SelectedWarrantyProduct @relation(fields: [selectedWarrantyProductId], references: [id])
+
+  @@index([ratesPackageId])
+}
+
+model SelectedWarrantyOptions {
+  id                        Int                      @id @default(autoincrement())
+  publicId                  String                   @unique @map("public_id") @db.VarChar(12)
+  createdAt                 DateTime                 @default(now())
+  updatedAt                 DateTime                 @updatedAt
+  optionsPackages           WarrantyOptionsPackage[]
+  selectedWarrantyProductId Int                      @unique
+  selectedWarrantyProduct   SelectedWarrantyProduct  @relation(fields: [selectedWarrantyProductId], references: [id])
+}

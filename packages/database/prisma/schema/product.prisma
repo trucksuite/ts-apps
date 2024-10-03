@@ -1,0 +1,139 @@
+model WarrantyProductCategory {
+  id               Int               @id @default(autoincrement())
+  publicId         String            @unique @map("public_id") @db.VarChar(12)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  name             String
+  warrantyProducts WarrantyProduct[]
+}
+
+model WarrantyProduct {
+  id                              Int                               @id @default(autoincrement())
+  publicId                        String                            @unique @map("public_id") @db.VarChar(12)
+  createdAt                       DateTime                          @default(now())
+  updatedAt                       DateTime                          @updatedAt
+  name                            String
+  fuelType                        FuelType
+  ratesPackages                   WarrantyRatesPackage[]
+  optionsPackages                 WarrantyOptionsPackage[]
+  disclosures                     WarrantyDisclosure[]
+  coverages                       WarrantyCoverage[]
+  warrantyProductCategoryId       Int
+  warrantyProductCategory         WarrantyProductCategory           @relation(fields: [warrantyProductCategoryId], references: [id])
+  warrantyAgreementId             Int
+  warrantyAgreement               WarrantyAgreement                 @relation(fields: [warrantyAgreementId], references: [id])
+  // warrantyTerms                   WarrantyTerm[]
+  // warrantyOptions                 WarrantyOption[]
+  // locationWarrantyProductAssigned LocationWarrantyProductAssigned[]
+  LocationAssignedWarrantyProduct LocationAssignedWarrantyProduct[]
+
+  @@index([warrantyProductCategoryId])
+  @@index([warrantyAgreementId])
+}
+
+model WarrantyRatesPackage {
+  id                   Int                    @id @default(autoincrement())
+  publicId             String                 @unique @map("public_id") @db.VarChar(12)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  termValue            Int
+  termUnit             TermUnits
+  mileageValue         Int
+  mileageUnit          MileageUnits
+  yearMileageLimit     YearMileageLimits
+  deductible           Int
+  aggregateLimit       Int
+  rate                 Int
+  warrantyProductId    Int
+  warrantyProduct      WarrantyProduct        @relation(fields: [warrantyProductId], references: [id])
+  SelectedWarrantyTerm SelectedWarrantyTerm[]
+
+  @@index([warrantyProductId])
+}
+
+model WarrantyOptionsPackage {
+  id                      Int                       @id @default(autoincrement())
+  publicId                String                    @unique @map("public_id") @db.VarChar(12)
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  type                    String
+  termValue               Int
+  termUnit                TermUnits
+  rate                    Int
+  warrantyProductId       Int
+  warrantyProduct         WarrantyProduct           @relation(fields: [warrantyProductId], references: [id])
+  SelectedWarrantyOptions SelectedWarrantyOptions[]
+
+  @@index([warrantyProductId])
+}
+
+model WarrantyDisclosure {
+  id                Int             @id @default(autoincrement())
+  publicId          String          @unique @map("public_id") @db.VarChar(12)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  name              String
+  description       String
+  warrantyProductId Int
+  warrantyProduct   WarrantyProduct @relation(fields: [warrantyProductId], references: [id])
+
+  @@index([warrantyProductId])
+}
+
+model WarrantyCoverage {
+  id                Int             @id @default(autoincrement())
+  publicId          String          @unique @map("public_id") @db.VarChar(12)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  name              String
+  description       String
+  optional          Boolean         @default(false)
+  warrantyProductId Int
+  warrantyProduct   WarrantyProduct @relation(fields: [warrantyProductId], references: [id])
+
+  @@index([warrantyProductId])
+}
+
+model WarrantyAgreement {
+  id                Int               @id @default(autoincrement())
+  publicId          String            @unique @map("public_id") @db.VarChar(12)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  url               String
+  warrantyProductId Int
+  warrantyProduct   WarrantyProduct[]
+  version           String
+
+  SignedWarrantyAgreement SignedWarrantyAgreement[]
+}
+
+// model WarrantyTerm {
+//   id                    Int                    @id @default(autoincrement())
+//   publicId              String                 @unique @map("public_id") @db.VarChar(12)
+//   createdAt             DateTime               @default(now())
+//   updatedAt             DateTime               @updatedAt
+//   termValue             String
+//   termUnit              TermUnits
+//   mileageValue          String
+//   mileageUnit           MileageUnits
+//   warrantyTermsSelected WarrantyTermSelected[]
+//   warrantyProductId     Int
+//   warrantyProduct       WarrantyProduct        @relation(fields: [warrantyProductId], references: [id])
+
+//   @@index([warrantyProductId])
+// }
+
+// model WarrantyOption {
+//   id                     Int                       @id @default(autoincrement())
+//   publicId               String                    @unique @map("public_id") @db.VarChar(12)
+//   createdAt              DateTime                  @default(now())
+//   updatedAt              DateTime                  @updatedAt
+//   name                   String
+//   termValue              String
+//   termUnit               TermUnits
+//   warrantyOptionSelected WarrantyOptionsSelected[]
+//   warrantyProductId      Int
+//   warrantyProduct        WarrantyProduct           @relation(fields: [warrantyProductId], references: [id])
+
+//   @@index([warrantyProductId])
+// }
