@@ -46,7 +46,7 @@
 	<p class="font-semibold">Fill out a New Producer Agreement E-Signature Request Form</p>
 	<div class="mb-4 flex items-center justify-between">
 		<button class="btn btn-primary w flex" type="button" on:click={goToESignaturePage}
-			>Go Now</button
+			>Fill out e-signature form</button
 		>
 	</div>
 </div>
