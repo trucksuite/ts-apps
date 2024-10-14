@@ -6,18 +6,23 @@
 
   export let path: string;
   export let bg: string;
+  export let type: 'system' | 'sales';
 
   console.log('🥶', path, bg);
 </script>
 
-<div class="flex flex-col w-full h-full bg-cover" style={`background-image: url('${bg}')`}>
+<div
+  class="flex flex-col w-full h-full bg-no-repeat bg-cover"
+  style:background-image={`url('${bg}')`}
+  style:background-position="top center"
+>
   <AppShell
     regionPage="p-12 flex items-center justify-center relative"
-    slotPageContent="p-8 bg-surface-100/95 rounded-lg border border-surface-500 flex flex-col w-full h-full shadow-lg overflow-y-scroll"
+    slotPageContent="p-8 bg-surface-100 rounded-lg border border-surface-500 flex flex-col w-full h-full shadow-lg overflow-y-scroll"
     slotSidebarLeft="overflow-y-hidden border-r border-surface-500 bg-surface-100/95"
   >
-    <svelte:fragment slot="header"><Header type="system" /></svelte:fragment>
-    <svelte:fragment slot="sidebarLeft"><Sidebar activePath={path} /></svelte:fragment>
+    <svelte:fragment slot="header"><Header {type} /></svelte:fragment>
+    <svelte:fragment slot="sidebarLeft"><Sidebar activePath={path} {type} /></svelte:fragment>
     <slot />
     <svelte:fragment slot="pageFooter"><Footer /></svelte:fragment>
   </AppShell>

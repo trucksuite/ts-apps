@@ -15,7 +15,7 @@
 	$: getPath($page.url.pathname);
 </script>
 
-<PageWrapper {path} {bg}>
+<PageWrapper {path} {bg} type="system">
 	<div class="flex flex-col gap-4">
 		<slot />
 	</div>

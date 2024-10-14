@@ -8,45 +8,42 @@ model WarrantyProductCategory {
 }
 
 model WarrantyProduct {
-  id                              Int                               @id @default(autoincrement())
-  publicId                        String                            @unique @map("public_id") @db.VarChar(12)
-  createdAt                       DateTime                          @default(now())
-  updatedAt                       DateTime                          @updatedAt
-  name                            String
-  fuelType                        FuelType
-  ratesPackages                   WarrantyRatesPackage[]
-  optionsPackages                 WarrantyOptionsPackage[]
-  disclosures                     WarrantyDisclosure[]
-  coverages                       WarrantyCoverage[]
-  warrantyProductCategoryId       Int
-  warrantyProductCategory         WarrantyProductCategory           @relation(fields: [warrantyProductCategoryId], references: [id])
-  warrantyAgreementId             Int
-  warrantyAgreement               WarrantyAgreement                 @relation(fields: [warrantyAgreementId], references: [id])
-  // warrantyTerms                   WarrantyTerm[]
-  // warrantyOptions                 WarrantyOption[]
-  // locationWarrantyProductAssigned LocationWarrantyProductAssigned[]
-  LocationAssignedWarrantyProduct LocationAssignedWarrantyProduct[]
+  id                               Int                               @id @default(autoincrement())
+  publicId                         String                            @unique @map("public_id") @db.VarChar(12)
+  createdAt                        DateTime                          @default(now())
+  updatedAt                        DateTime                          @updatedAt
+  name                             String
+  fuelType                         FuelType
+  ratesPackages                    WarrantyRatesPackage[]
+  optionsPackages                  WarrantyOptionsPackage[]
+  disclosures                      WarrantyDisclosure[]
+  coverages                        WarrantyCoverage[]
+  warrantyProductCategoryId        Int
+  warrantyProductCategory          WarrantyProductCategory           @relation(fields: [warrantyProductCategoryId], references: [id])
+  warrantyAgreementId              Int
+  warrantyAgreement                WarrantyAgreement                 @relation(fields: [warrantyAgreementId], references: [id])
+  locationAssignedWarrantyProducts LocationAssignedWarrantyProduct[]
 
   @@index([warrantyProductCategoryId])
   @@index([warrantyAgreementId])
 }
 
 model WarrantyRatesPackage {
-  id                   Int                    @id @default(autoincrement())
-  publicId             String                 @unique @map("public_id") @db.VarChar(12)
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
-  termValue            Int
-  termUnit             TermUnits
-  mileageValue         Int
-  mileageUnit          MileageUnits
-  yearMileageLimit     YearMileageLimits
-  deductible           Int
-  aggregateLimit       Int
-  rate                 Int
-  warrantyProductId    Int
-  warrantyProduct      WarrantyProduct        @relation(fields: [warrantyProductId], references: [id])
-  SelectedWarrantyTerm SelectedWarrantyTerm[]
+  id                    Int                    @id @default(autoincrement())
+  publicId              String                 @unique @map("public_id") @db.VarChar(12)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  termValue             Int
+  termUnit              TermUnits
+  mileageValue          Int
+  mileageUnit           MileageUnits
+  yearMileageLimit      YearMileageLimits
+  deductible            Int
+  aggregateLimit        Int
+  rate                  Int
+  warrantyProductId     Int
+  warrantyProduct       WarrantyProduct        @relation(fields: [warrantyProductId], references: [id])
+  selectedWarrantyTerms SelectedWarrantyTerm[]
 
   @@index([warrantyProductId])
 }
@@ -62,7 +59,7 @@ model WarrantyOptionsPackage {
   rate                    Int
   warrantyProductId       Int
   warrantyProduct         WarrantyProduct           @relation(fields: [warrantyProductId], references: [id])
-  SelectedWarrantyOptions SelectedWarrantyOptions[]
+  selectedWarrantyOptions SelectedWarrantyOptions[]
 
   @@index([warrantyProductId])
 }
@@ -95,16 +92,15 @@ model WarrantyCoverage {
 }
 
 model WarrantyAgreement {
-  id                Int               @id @default(autoincrement())
-  publicId          String            @unique @map("public_id") @db.VarChar(12)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  url               String
-  warrantyProductId Int
-  warrantyProduct   WarrantyProduct[]
-  version           String
-
-  SignedWarrantyAgreement SignedWarrantyAgreement[]
+  id                       Int                       @id @default(autoincrement())
+  publicId                 String                    @unique @map("public_id") @db.VarChar(12)
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  url                      String
+  warrantyProductId        Int
+  warrantyProduct          WarrantyProduct[]
+  version                  String
+  signedWarrantyAgreements SignedWarrantyAgreement[]
 }
 
 // model WarrantyTerm {

@@ -4,7 +4,8 @@
   "type": "module",
   "dependencies": {
     "@prisma/client": "^5.19.1",
-    "@repo/utils": "*"
+    "@repo/utils": "*",
+    "tsx": "^4.19.1"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
@@ -17,9 +18,10 @@
     "db:push": "prisma db push --skip-generate"
   },
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./client": "./client.ts"
   },
   "prisma": {
-    "seed": "ts-node --esm prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts"
   }
 }

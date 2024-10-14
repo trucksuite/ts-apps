@@ -2,7 +2,9 @@
   "name": "@repo/utils",
   "type": "module",
   "exports": {
-    "./public-id": "./public-id.ts"
+    "./public-id": "./public-id.ts",
+    "./types": "./types.ts",
+    "./values": "./values.ts"
   },
   "devDependencies": {
     "nanoid": "^5.0.7"

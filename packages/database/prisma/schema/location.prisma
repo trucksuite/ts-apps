@@ -52,7 +52,7 @@ model LocationAssignedWarrantyProduct {
   // selectedProduct                     SelectedWarrantyProduct[]
   // warrantyProductTerms WarrantyProductTerm[]
   // warrantyProductOptions WarrantyProductOption[]
-  SelectedWarrantyProduct             SelectedWarrantyProduct[]
+  selectedWarrantyProducts            SelectedWarrantyProduct[]
 
   @@index([locationId])
   @@index([warrantyProductId])

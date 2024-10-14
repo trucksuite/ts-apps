@@ -3,6 +3,7 @@
 	export let handler: DataHandler;
 	let value: string;
 	let timeout: any;
+	export let placeHolderText: string;
 
 	const search = () => {
 		handler.search(value);
@@ -14,9 +15,9 @@
 </script>
 
 <input
-	class="input-variant-secondary input w-36 sm:w-64"
+	class="input-variant-secondary input w-2/5"
 	type="search"
-	placeholder="Search..."
+	placeholder={placeHolderText}
 	bind:value
 	on:input={search}
 />

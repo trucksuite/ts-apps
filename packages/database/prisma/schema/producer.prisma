@@ -23,7 +23,7 @@ model Producer {
   producerAgreementId             String?
   truckSuiteSalesRepresentative   TruckSuiteSalesRepresentative? @relation(fields: [truckSuiteSalesRepresentativeId], references: [id])
   truckSuiteSalesRepresentativeId Int?
-  customerSale                    CustomerSale[]
+  customerSales                   CustomerSale[]
 
   @@index([publicId])
   @@index([name])

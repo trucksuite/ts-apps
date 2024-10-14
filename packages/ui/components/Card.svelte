@@ -6,7 +6,7 @@
 </script>
 
 <a
-  class="card card-hover shadow flex-auto overflow-hidden max-w-[325px] w-full h-auto min-h-[372px]"
+  class="card card-hover shadow overflow-hidden max-w-[300px] h-auto min-h-[372px] flex-auto w-full"
   href={url}
 >
   <header>

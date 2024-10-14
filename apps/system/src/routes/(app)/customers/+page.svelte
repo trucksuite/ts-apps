@@ -41,7 +41,10 @@
 </script>
 
 <PageHeader text="Customers" />
-<Datatable {handler}>
+<div class="mb-4 flex items-center justify-between">
+	<button class="btn btn-primary">Create New Customer</button>
+</div>
+<Datatable {handler} placeHolderText="Search by Last Name or Vin...">
 	<div class="table-container">
 		<table class="table-interactive table-compact mb-4 table">
 			<thead>
@@ -96,7 +99,7 @@
 									<td>
 										<a href={`/customers/${customerSale.publicId}`}>
 											<span class="flex items-center gap-2">
-												{customerSale.warrantyProductSelected.locationWarrantyProductAssigned
+												{customerSale.selectedWarrantyProduct.locationWarrantyProduct
 													.warrantyProduct.name}
 											</span>
 										</a>
@@ -123,7 +126,7 @@
 									<td class="flex items-center gap-4">
 										<a
 											class="text-primary-500 flex items-center"
-											href={`/dashboard/customers/${customerSale.publicId}`}>View</a
+											href={`/customers/${customerSale.publicId}`}>View</a
 										>
 									</td>
 								</tr>

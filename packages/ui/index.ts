@@ -9,4 +9,4 @@ export { default as Card } from './components/Card.svelte';
 export { default as Divider } from './components/Divider.svelte';
 export * from './components/icons';
 export * from './components/logos';
-export * from './components/inputs';
+export * from './components/formFields';
